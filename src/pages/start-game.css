@@ -1,0 +1,20 @@
+h1{
+    font-size: 3em;
+    margin-left: 3em;
+
+}
+#start_Game {
+    background-color: mediumpurple;
+    width: 20%;
+    height: 3em;
+    text-align: center;
+    font-size: 2em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    border-radius: 50%;
+}
+img{
+    margin-left: 2em;
+
+}
