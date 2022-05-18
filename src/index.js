@@ -46,7 +46,6 @@ function isBoardFull(board) {
     }
   }
   if (count === 9) {
-    handleDraw();
     return true;
   }
   return false;
