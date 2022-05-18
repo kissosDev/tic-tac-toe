@@ -30,3 +30,10 @@ function updateBoardAccordingToPlayerChoice(
   // const marker = turnToMarkerDict[currentPlayer];
   board[selectedPosition] = marker;
 }
+
+function switchPlayerTurn(currentPlayer) {
+  if (getCurrentPlayerMarker(currentPlayer)) {
+    gameData.playerTurn = false;
+  }
+  gameData.playerTurn = true;
+}
