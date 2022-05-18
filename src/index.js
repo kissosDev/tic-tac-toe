@@ -78,3 +78,26 @@ function isGameOver(board, currentPlayer) {
   if (isBoardFull) return true;
   return false;
 }
+
+function getUserInput() {
+  const location = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
+  let userInput = prompt("Pick location from 0-8");
+  if (!location.includes(userInput)) {
+    console.log("Invalid value has been given please chose other one");
+    userInput = getUserInput();
+  }
+
+  return parseInt(userInput);
+}
+
+// function gameDeclaration() {
+//   if (isGameOver("X")) {
+//     console.log("player 1 is great");
+//     exitGame();
+//     return true;
+//   }
+//   if (isGameOver("O")) {
+//     console.log("player 2 is great");
+//     exitGame();
+//     return true;
+//   }
