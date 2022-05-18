@@ -20,3 +20,13 @@ function isSelectedpositionValid(board, selectedPosition) {
   if (board[selectedPosition] !== -1) return false;
   return true;
 }
+
+function updateBoardAccordingToPlayerChoice(
+  board,
+  currentPlayer,
+  selectedPosition
+) {
+  const marker = getCurrentPlayerMarker(currentPlayer);
+  // const marker = turnToMarkerDict[currentPlayer];
+  board[selectedPosition] = marker;
+}
