@@ -15,3 +15,8 @@ function getCurrentPlayerMarker(currentPlayer) {
 //   1: 'X',
 //   0: 'O'
 // };
+
+function isSelectedpositionValid(board, selectedPosition) {
+  if (board[selectedPosition] !== -1) return false;
+  return true;
+}
