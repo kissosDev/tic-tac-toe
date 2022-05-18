@@ -37,3 +37,17 @@ function switchPlayerTurn(currentPlayer) {
   }
   gameData.playerTurn = true;
 }
+
+function isBoardFull(board) {
+  let count = 0;
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] !== -1) {
+      count++;
+    }
+  }
+  if (count === 9) {
+    handleDraw();
+    return true;
+  }
+  return false;
+}
