@@ -51,3 +51,30 @@ function isBoardFull(board) {
   }
   return false;
 }
+
+function isGameOver(board, currentPlayer) {
+  const marker = getPlayerMarker(currentPlayer);
+  for (let i = 0; i < 6; i += 3) {
+    if (
+      board[i] === marker &&
+      board[i + 1] === marker &&
+      board[i + 2] === marker
+    )
+      return true;
+  }
+  for (let i = 0; i < 3; i++) {
+    if (
+      board[i] === marker &&
+      board[i + 3] === marker &&
+      board[i + 6] === marker
+    ) {
+      return true;
+    }
+  }
+  if (board[0] === marker && board[4] === marker && board[8] === marker)
+    return true;
+  if (board[2] === marker && board[4] === marker && board[6] === marker)
+    return true;
+  if (isBoardFull) return true;
+  return false;
+}
