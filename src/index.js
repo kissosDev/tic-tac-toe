@@ -75,11 +75,11 @@ function isGameOver(board, currentPlayer) {
     return true;
   if (board[2] === marker && board[4] === marker && board[6] === marker)
     return true;
-  if (isBoardFull) return true;
+  if (isBoardFull()) return true;
   return false;
 }
 
-function getUserInput() {
+function getUserLocation() {
   const location = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
   let userInput = prompt("Pick location from 0-8");
   if (!location.includes(userInput)) {
@@ -90,14 +90,29 @@ function getUserInput() {
   return parseInt(userInput);
 }
 
-// function gameDeclaration() {
-//   if (isGameOver("X")) {
-//     console.log("player 1 is great");
-//     exitGame();
-//     return true;
-//   }
-//   if (isGameOver("O")) {
-//     console.log("player 2 is great");
-//     exitGame();
-//     return true;
-//   }
+function winnerDeclaration(board, currentPlayer) {
+  if (currentPlayer) {
+    return console.log("player 1 is the winner!");
+  } else {
+    return console.log("player 2 is the winner!");
+  }
+}
+function main() {
+  initiateBoard();
+  const gameData = {
+    playerTurn: true,
+  };
+  let currentPlayer = gameData.playerTurn; // DOM
+  let currentMarker = getCurrentPlayerMarker(currentPlayer);
+  let selectedPosition = getUserLocation(); //DOM
+  do {
+    while (!isSelectedpositioValid) {
+      selectedPosition = getUserLocation(); //DOM
+    }
+    updateBoardAccordingToPlayerChoice(board, currentPlayer, selectedPosition);
+    currentPlayer = switchPlayerTurn(currentPlayer);
+  } while (!isGameOver(board, currentPlayer));
+  currentPlayer = switchPlayerTurn(currentPlayer);
+  if (isBoardFull) return console.log("it's a draw!");
+  else winnerDeclaration(board, currentPlayer);
+}
