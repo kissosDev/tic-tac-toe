@@ -16,9 +16,8 @@ function getCurrentPlayerMarker(currentPlayer) {
 //   0: 'O'
 // };
 
-function isSelectedpositionValid(board, selectedPosition) {
-  if (board[selectedPosition] !== -1) return false;
-  return true;
+function isAvailable(board, selectedPosition) {
+  return board[selectedPosition] === -1;
 }
 
 function updateBoardAccordingToPlayerChoice(
@@ -31,13 +30,19 @@ function updateBoardAccordingToPlayerChoice(
   board[selectedPosition] = marker;
 }
 
-function switchPlayerTurn(currentPlayer) {
-  if (getCurrentPlayerMarker(currentPlayer)) {
-    gameData.playerTurn = false;
-  }
-  gameData.playerTurn = true;
-}
+// function switchPlayerTurn(currentPlayer, gameData) {
 
+//     if (getCurrentPlayerMarker(currentPlayer) === "X") {
+//         gameData.playerTurn = false;
+//     }
+//     gameData.playerTurn = true;
+
+// gameData.playerTurn = !gameData.playerTurn;
+// }
+function switchPlayerTurn(gameData) {
+  gameData.playerTurn = !gameData.playerTurn;
+  return gameData.playerTurn;
+}
 function isBoardFull(board) {
   let count = 0;
   for (let i = 0; i < board.length; i++) {
@@ -45,49 +50,56 @@ function isBoardFull(board) {
       count++;
     }
   }
-  if (count === 9) {
-    return true;
-  }
+  if (count === 9) return true;
   return false;
+
+  // return
 }
 
-function isGameOver(board, currentPlayer) {
-  const marker = getPlayerMarker(currentPlayer);
+function isGameOver(board) {
+  function shouldWin(i, j, k) {
+    const x = board[i];
+    const y = board[j];
+    const z = board[k];
+    if ([x, y, z].includes(-1)) return false;
+    return x === y && y === z;
+  }
+
   for (let i = 0; i < 6; i += 3) {
-    if (
-      board[i] === marker &&
-      board[i + 1] === marker &&
-      board[i + 2] === marker
-    )
-      return true;
+    if (shouldWin(i, i + 1, i + 2)) return true;
   }
+
   for (let i = 0; i < 3; i++) {
-    if (
-      board[i] === marker &&
-      board[i + 3] === marker &&
-      board[i + 6] === marker
-    ) {
-      return true;
-    }
+    if (shouldWin(i, i + 3, i + 6)) return true;
   }
-  if (board[0] === marker && board[4] === marker && board[8] === marker)
-    return true;
-  if (board[2] === marker && board[4] === marker && board[6] === marker)
-    return true;
-  if (isBoardFull()) return true;
-  return false;
+  if (shouldWin(0, 4, 8)) return true;
+  if (shouldWin(2, 4, 6)) return true;
+  // both players did not win
+  return !board.includes(-1);
 }
 
 function getUserLocation() {
-  const location = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
-  let userInput = prompt("Pick location from 0-8");
-  if (!location.includes(userInput)) {
-    console.log("Invalid value has been given please chose other one");
-    userInput = getUserInput();
-  }
+  let userInput = prompt(
+    "Pick location from 0-8 or q to exit game"
+  ).toLowerCase();
+  if (userInput === "q") return userInput;
 
-  return parseInt(userInput);
+  const location = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
+  if (location.includes(userInput)) return parseInt(userInput);
+
+  console.log("Invalid value has been given please choose other one");
+  return getUserLocation();
 }
+
+// function getPositionFromUser() {
+//   let userInput = 42;
+//   const location = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "q"];
+//   while (!location.includes(userInput)) {
+//     userInput = prompt("salooo").toLowerCase();
+//   }
+//   if (userInput === "q") return userInput;
+//   return parseInt(userInput);
+// }
 
 function winnerDeclaration(board, currentPlayer) {
   if (currentPlayer) {
@@ -97,21 +109,36 @@ function winnerDeclaration(board, currentPlayer) {
   }
 }
 function main() {
-  initiateBoard();
+  const board = initiateBoard();
   const gameData = {
     playerTurn: true,
   };
   let currentPlayer = gameData.playerTurn; // DOM
   let currentMarker = getCurrentPlayerMarker(currentPlayer);
-  let selectedPosition = getUserLocation(); //DOM
+  let selectedPosition = 42; //DOM
+
   do {
-    while (!isSelectedpositioValid) {
+    while (!isAvailable(board, selectedPosition)) {
+      if (selectedPosition !== 42) {
+        console.log(selectedPosition);
+        console.log("This location already been taken. Try another one!");
+      }
       selectedPosition = getUserLocation(); //DOM
+      if (selectedPosition === "q") {
+        console.log("Game is over bitch");
+        return;
+      }
     }
     updateBoardAccordingToPlayerChoice(board, currentPlayer, selectedPosition);
-    currentPlayer = switchPlayerTurn(currentPlayer);
-  } while (!isGameOver(board, currentPlayer));
-  currentPlayer = switchPlayerTurn(currentPlayer);
-  if (isBoardFull) return console.log("it's a draw!");
-  else winnerDeclaration(board, currentPlayer);
+    currentPlayer = switchPlayerTurn(gameData);
+    currentMarker = getCurrentPlayerMarker(currentPlayer);
+    console.log(board);
+  } while (!isGameOver(board));
+  currentPlayer = switchPlayerTurn(gameData);
+  if (isBoardFull(board)) {
+    console.log("it's a draw!");
+    return;
+  }
+  winnerDeclaration(board, currentPlayer);
+  console.log("game over");
 }
