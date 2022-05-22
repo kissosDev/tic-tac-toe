@@ -16,10 +16,6 @@ function getCurrentPlayerMarker(currentPlayer) {
 //   0: 'O'
 // };
 
-function isAvailable(board, selectedPosition) {
-  return board[selectedPosition] === -1;
-}
-
 function updateBoardAccordingToPlayerChoice(
   board,
   currentPlayer,
@@ -44,16 +40,7 @@ function switchPlayerTurn(gameData) {
   return gameData.playerTurn;
 }
 function isBoardFull(board) {
-  let count = 0;
-  for (let i = 0; i < board.length; i++) {
-    if (board[i] !== -1) {
-      count++;
-    }
-  }
-  if (count === 9) return true;
-  return false;
-
-  // return
+  return !board.includes(-1);
 }
 
 function isGameOver(board) {
@@ -101,44 +88,42 @@ function getUserLocation() {
 //   return parseInt(userInput);
 // }
 
-function winnerDeclaration(board, currentPlayer) {
-  if (currentPlayer) {
-    return console.log("player 1 is the winner!");
-  } else {
-    return console.log("player 2 is the winner!");
-  }
+function declareWinner(currentPlayer) {
+  let winner = currentPlayer ? "1" : "2";
+  console.log(`player ${winner} is the winner!`);
 }
+
 function main() {
   const board = initiateBoard();
+  const isAvailable = (position) => board[position] === -1;
   const gameData = {
     playerTurn: true,
   };
   let currentPlayer = gameData.playerTurn; // DOM
   let currentMarker = getCurrentPlayerMarker(currentPlayer);
-  let selectedPosition = 42; //DOM
+  let selectedPosition = 10; //DOM
 
-  do {
-    while (!isAvailable(board, selectedPosition)) {
-      if (selectedPosition !== 42) {
-        console.log(selectedPosition);
-        console.log("This location already been taken. Try another one!");
-      }
-      selectedPosition = getUserLocation(); //DOM
+  while (!isGameOver(board)) {
+    while (true) {
+      selectedPosition = getUserLocation();
       if (selectedPosition === "q") {
         console.log("Game is over bitch");
         return;
       }
+      if (isAvailable(selectedPosition)) break;
+      console.log("This postion is already taken");
     }
+
     updateBoardAccordingToPlayerChoice(board, currentPlayer, selectedPosition);
     currentPlayer = switchPlayerTurn(gameData);
     currentMarker = getCurrentPlayerMarker(currentPlayer);
     console.log(board);
-  } while (!isGameOver(board));
+  }
   currentPlayer = switchPlayerTurn(gameData);
   if (isBoardFull(board)) {
     console.log("it's a draw!");
     return;
   }
-  winnerDeclaration(board, currentPlayer);
+  declareWinner(board, currentPlayer);
   console.log("game over");
 }
