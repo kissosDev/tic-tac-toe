@@ -1,20 +1,28 @@
-h1{
-    font-size: 3em;
-    margin-left: 3em;
-
+.main-title {
+  /* display: flex; */
+  /* justify-content: center; */
+  padding: 40px;
+  text-align: center;
 }
-#start_Game {
-    background-color: mediumpurple;
-    width: 20%;
-    height: 3em;
-    text-align: center;
-    font-size: 2em;
-    margin-top: 2em;
-    margin-bottom: 2em;
-    margin-left: 2em;
-    border-radius: 50%;
-}
-img{
-    margin-left: 2em;
 
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0px;
+}
+
+.center-img-container {
+  text-align: center;
+}
+
+.start-game {
+  /* text-align: center; */
+}
+
+.start-game button {
+  border: 1px #2c98c7 solid;
+  background-color: rgb(184, 101, 33);
+  padding: 7px 10px;
+  border-radius: 20px;
+  padding: 20px;
 }
