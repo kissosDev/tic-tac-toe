@@ -2,9 +2,9 @@
 const DRAW = "draw";
 const CURRENT_PLAYER_WON = "currentPlayerWon";
 const ONGOING = "ongoing";
-
 let board = getNewBoard();
 let currentPlayer = true;
+highlightPlayerTurn();
 const cellElements = document.querySelectorAll(".box");
 // let index = 0;
 cellElements.forEach((cell, index) => {
@@ -118,4 +118,5 @@ function declareWinner() {
 function restartGame() {
   board = getNewBoard();
   placeMarker();
+  currentPlayer = true;
 }
