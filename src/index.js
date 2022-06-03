@@ -2,6 +2,8 @@
 const DRAW = "draw";
 const CURRENT_PLAYER_WON = "currentPlayerWon";
 const ONGOING = "ongoing";
+const endGameMassegeDiv = document.querySelector(".game-board");
+// endGameMassegeDiv.classList.remove("endGameMessages");
 let board = getNewBoard();
 let currentPlayer = true;
 highlightPlayerTurn();
@@ -25,6 +27,7 @@ function handleClick(event) {
 function updateUI() {
   placeMarker();
   highlightPlayerTurn();
+  endGameMasseges();
 }
 
 function placeMarker() {
@@ -65,7 +68,7 @@ function handleCurrentTurn(selectedPosition) {
     return;
   }
   if (currentStatus === CURRENT_PLAYER_WON) {
-    declareWinner();
+    // declareWinner();
     return;
   }
   if (currentStatus === DRAW) {
@@ -110,13 +113,34 @@ function getCurrentGameStatus() {
   return board.includes(-1) ? ONGOING : DRAW;
 }
 
-function declareWinner() {
-  let winner = currentPlayer ? "1" : "2";
-  console.log(`player ${winner} is the winner!`);
-}
+// function declareWinner() {
+//   let winner = currentPlayer ? "1" : "2";
+//   console.log(`player ${winner} is the winner!`);
+// }
 
 function restartGame() {
   board = getNewBoard();
   placeMarker();
   currentPlayer = true;
+  // endGameMassegeDiv.classList.remove("endGameMessages");
+  endGameMassegeDiv.innerHTML = "";
+}
+
+function endGameMasseges() {
+  const gameStatus = getCurrentGameStatus();
+  if (gameStatus === ONGOING) {
+    endGameMassegeDiv.classList.remove("endGameMasseges");
+    return;
+  }
+  if (gameStatus === DRAW) {
+    endGameMassegeDiv.classList.add("endGameMasseges");
+    endGameMassegeDiv.innerHTML = "It's a draw!";
+    console.log("Its a draw");
+    return;
+  }
+  if (gameStatus === CURRENT_PLAYER_WON) {
+    endGameMassegeDiv.classList.add("endGameMasseges");
+    endGameMassegeDiv.innerHTML = `Player ${currentPlayer ? "X" : "O"} won!`;
+    return;
+  }
 }
